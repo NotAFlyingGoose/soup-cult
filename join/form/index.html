@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Soup Cult Application</title>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+
+<body>
+
+    <header>
+        <a href="/" class="logo">
+            <img src="https://cdn.discordapp.com/icons/741464073845342259/0420f942971b11e90b9a344af66f9f01.webp?size=64">
+            <h1>The Soup Cult</h1>
+        </a>
+        <div class="header-right">
+            <a href="/">Home</a>
+            <a href="/join/">Join Us</a>
+            <a class="active" href="/tools/">Tools</a>
+        </div>
+    </header>
+
+    <div id="content">
+
+        <h1>Soup Cult Application Generator</h1>
+        <p>the application for joining the soup cult</p>
+
+        <textarea id="input">enter JSON here...</textarea><br>
+        <button onclick="load()">Load JSON</button>
+        <p style="color: red;" id="input_error"></p>
+
+        <h3>What is the ign of the applicant?</h3>
+        <input id="ign">
+        <p style="color: red;" id="ign_error"></p>
+
+        <h3>Does the applicant know that the cult is a guild (as sometimes this is a stop)</h3>
+        <input type="radio" id="true" name="guild" value="true">
+        <label for="true">Yes</label><br>
+        <input type="radio" id="false" name="guild" value="false">
+        <label for="false">No</label>
+        <p style="color: red;" id="guild_error"></p>
+
+        <h3>Does the applicant swear to tell the truth during this application</h3>
+        <input type="radio" id="true" name="truth" value="true">
+        <label for="true">Yes</label><br>
+        <input type="radio" id="false" name="truth" value="false">
+        <label for="false">No</label>
+        <p style="color: red;" id="truth_error"></p>
+
+        <h3>Does the applicant understand that if found lying he will be disallowed to join the cult forever</h3>
+        <input type="radio" id="true" name="lie" value="true">
+        <label for="true">Yes</label><br>
+        <input type="radio" id="false" name="lie" value="false">
+        <label for="false">No</label>
+        <p style="color: red;" id="lie_error"></p>
+
+        <h3>Does the applicant have any alt accounts</h3>
+        <input type="radio" id="true" name="alts" value="true">
+        <label for="true">Yes</label><br>
+        <input type="radio" id="false" name="alts" value="false">
+        <label for="false">No</label>
+        <p style="color: red;" id="alts_error"></p>
+
+        <h3>List the applicant's friends / the people the applicant likes to hang around with (ign only)</h3>
+        <textarea id="friends"></textarea>
+        <p style="color: red;" id="friends_error"></p>
+
+        <h3>List everything the applicant's friends have done wrong in the past especially scamming (in detail).</h3>
+        <textarea id="badfriends"></textarea>
+        <p style="color: red;" id="badfriends_error"></p>
+
+        <h3>How does the applicant feel about the wrong actions of his friends?</h3>
+        <textarea id="badfriendsfeel"></textarea>
+        <p style="color: red;" id="badfriendsfeel_error"></p>
+
+        <h3>List <em>everything</em> in detail the applicant has done that could even <em>remotely</em> be considered
+            bad or
+            wrong.</h3>
+        <textarea id="badapp"></textarea>
+        <p style="color: red;" id="badapp_error"></p>
+
+        <h3>How does the applicant feel about the wrong actions he commited.</h3>
+        <textarea id="badappfeel"></textarea>
+        <p style="color: red;" id="badappfeel_error"></p>
+
+        <h3>How does the applicant feel about mushrooms (no wrong answers)?</h3>
+        <input type="radio" id="one" name="mushrooms" value="one">
+        <label for="one">1</label>
+        <input type="radio" id="two" name="mushrooms" value="two">
+        <label for="two">2</label>
+        <input type="radio" id="three" name="mushrooms" value="three">
+        <label for="three">3</label>
+        <input type="radio" id="four" name="mushrooms" value="four">
+        <label for="four">4</label>
+        <input type="radio" id="five" name="mushrooms" value="five">
+        <label for="five">5</label>
+        <input type="radio" id="six" name="mushrooms" value="six">
+        <label for="six">6</label>
+        <input type="radio" id="seven" name="mushrooms" value="seven">
+        <label for="seven">7</label>
+        <input type="radio" id="eight" name="mushrooms" value="eight">
+        <label for="eight">8</label>
+        <input type="radio" id="nine" name="mushrooms" value="nine">
+        <label for="nine">9</label>
+        <input type="radio" id="ten" name="mushrooms" value="ten">
+        <label for="ten">10</label>
+        <p style="color: red;" id="mushrooms_error"></p>
+
+        <h3>Final interviewer notes (how does the interviewer feel about this applicant)</h3>
+        <textarea id="notes"></textarea>
+        <p style="color: red;" id="notes_error"></p>
+
+        <br><br><br>
+
+        <textarea id="output">output JSON here...</textarea><br>
+
+        <button onclick="generate()">Generate JSON</button>
+
+    </div>
+
+    <script>
+        function load() {
+            console.log("loading...");
+            var input = JSON.parse(getTextValue("input"));
+
+            document.getElementById("ign").value = input.ign.replaceAll("%20", " ");
+            setRadioValue("guild", "" + input.guild);
+            setRadioValue("truth", "" + input.truth);
+            setRadioValue("lie", "" + input.lie);
+            setRadioValue("alts", "" + input.alts);
+            document.getElementById("friends").value = input.friends.replaceAll("%20", " ");
+            document.getElementById("badfriends").value = input.badfriends.replaceAll("%20", " ");
+            document.getElementById("badfriendsfeel").value = input.badfriendsfeel.replaceAll("%20", " ");
+            document.getElementById("badapp").value = input.badapp.replaceAll("%20", " ");
+            document.getElementById("badappfeel").value = input.badappfeel.replaceAll("%20", " ");
+            document.getElementById("friends").value = input.friends.replaceAll("%20", " ");
+            setRadioValue("mushrooms", numberToName(input.mushrooms));
+            document.getElementById("notes").value = input.notes.replaceAll("%20", " ");
+
+            console.log("done loading :)");
+        }
+
+        function generate() {
+            console.log("generating...");
+            var json = {};
+
+            json.ign = getTextValue("ign");
+            json.guild = getRadioValue("guild") == "true";
+            json.truth = getRadioValue("truth") == "true";
+            json.lie = getRadioValue("lie") == "true";
+            json.alts = getRadioValue("alts") == "true";
+            json.friends = getTextValue("friends");
+            json.badfriends = getTextValue("badfriends");
+            json.badfriendsfeel = getTextValue("badfriendsfeel");
+            json.badapp = getTextValue("badapp");
+            json.badappfeel = getTextValue("badappfeel");
+            json.mushrooms = nameToNumber(getRadioValue("mushrooms"));
+            json.notes = getTextValue("notes");
+
+            try {
+                checkJsonNull(json);
+                console.log("done generating :)");
+                document.getElementById("output").innerHTML = JSON.stringify(json);
+            } catch (err) {
+                console.log("error generating : " + err);
+            }
+        }
+
+
+        function checkJsonNull(json) {
+            for (var key in json) {
+                if (json.hasOwnProperty(key)) {
+                    if (json[key] == null) {
+                        throw "Unentered Values";
+                    }
+                }
+            }
+        }
+
+        function nameToNumber(numberWord) {
+            if (numberWord == "one") {
+                return 1;
+            }
+            if (numberWord == "two") {
+                return 2;
+            }
+            if (numberWord == "three") {
+                return 3;
+            }
+            if (numberWord == "four") {
+                return 4;
+            }
+            if (numberWord == "five") {
+                return 5;
+            }
+            if (numberWord == "six") {
+                return 6;
+            }
+            if (numberWord == "seven") {
+                return 7;
+            }
+            if (numberWord == "eight") {
+                return 8;
+            }
+            if (numberWord == "nine") {
+                return 9;
+            }
+            if (numberWord == "ten") {
+                return 10;
+            }
+        }
+
+        function numberToName(number) {
+            if (number == 1) {
+                return "one";
+            }
+            if (number == 2) {
+                return "two";
+            }
+            if (number == 3) {
+                return "three";
+            }
+            if (number == 4) {
+                return "four";
+            }
+            if (number == 5) {
+                return "five";
+            }
+            if (number == 6) {
+                return "six";
+            }
+            if (number == 7) {
+                return "seven";
+            }
+            if (number == 8) {
+                return "eight";
+            }
+            if (number == 9) {
+                return "nine";
+            }
+            if (number == 10) {
+                return "ten";
+            }
+        }
+
+        function getTextValue(name) {
+            var text = document.getElementById(name).value;
+
+            if (text != "") {
+                document.getElementById(name + "_error").innerHTML = "";
+                return text.replaceAll(" ", "%20");
+            } else {
+                document.getElementById(name + "_error").innerHTML = "Please enter text";
+                return null;
+            }
+        }
+
+        function setRadioValue(name, value) {
+            var radios = document.getElementsByName(name);
+
+            for (var i = 0; i < radios.length; i++) {
+                if (radios[i].id == value) {
+                    radios[i].checked = true;
+                } else {
+                    radios[i].checked = false;
+                }
+            }
+        }
+
+        function getRadioValue(name) {
+            var radio_value = null;
+            var radios = document.getElementsByName(name);
+
+            for (var i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    radio_value = radios[i].value;
+                    break;
+                }
+            }
+
+            if (radio_value != null) {
+                document.getElementById(name + "_error").innerHTML = "";
+                return radio_value;
+            } else {
+                document.getElementById(name + "_error").innerHTML = "Please select radio";
+                return null;
+            }
+        }
+    </script>
+</body>
+
+</html>
